@@ -2,9 +2,9 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 
-cv::Mat setImageRed(cv::Mat img) {
+void setImageRed(cv::Mat img) {
 	img = cv::Scalar(0, 0, 100);
-	return img;
+	cv::imwrite("red.jpg", img);
 }
 
 void FillRed() {
@@ -33,17 +33,23 @@ void ImgtoGray(cv::Mat &img) {
 	cv::imwrite("szurke.jpg", GrayScale);
 }
 
+void convertRGBtoHSV(){
+	cv::Mat Image = cv::imread("C:\\Users\\hallgato\\Desktop\\kepf09_19\\ratpepega.jpg");
+	cv::Mat newImage;
+	cv::cvtColor(Image, newImage, cv::COLOR_BGR2HSV);
+	cv::imshow("newImage", newImage);
+}
+
 int main() {
 
 	cv::Mat M(640, 480, CV_8UC3, cv::Scalar::all(0));
 	cv::Mat Image = cv::imread("C:\\Users\\hallgato\\Desktop\\kepf09_19\\ratpepega.jpg");
-
+	
 	setImageRed(M);
-
-	cv::imwrite("red.jpg", M);
-
 	ImgtoGray(Image);
 	FillRed();
+	convertRGBtoHSV();
+
 	cv::imshow("M", M);
 	cv::waitKey();
 
