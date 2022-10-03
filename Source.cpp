@@ -3,6 +3,7 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/opencv.hpp>
 #include <iostream>
+#include "Source.h"
 
 void setImageRed(cv::Mat img) {
 	img = cv::Scalar(0, 0, 100);
@@ -62,6 +63,31 @@ void convertRGBtoHSV(){
 	cv::imshow("newImage", newImage);
 }
 
+void performAdaptiveThreshold() {
+	cv::Mat Image = cv::imread("C:\\Users\\hallgato\\Desktop\\kepf09_19\\dark.jpg",0);
+	cv::Mat thresholded;
+
+	int blockSize = 5;
+	cv::adaptiveThreshold(Image, thresholded, 255, cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, blockSize, 2);
+
+	cv::imshow("adaptive", thresholded);
+}
+
+void performManualThreshold()
+{
+	cv::Mat Image = cv::imread("C:\\Users\\hallgato\\Desktop\\kepf09_19\\pepe.jpg");
+	cv::Mat thresholded;
+	cv::Mat masked;
+	unsigned char thresh_value = 50;
+	cv::threshold(Image, thresholded, thresh_value, 255, cv::THRESH_BINARY);
+
+	cv::imshow("pepe_mask", thresholded);
+	cv::waitKey();
+
+	cv::bitwise_and(Image, thresholded, masked);
+	cv::imshow("pepe_mask", masked);
+}
+
 int main() {
 
 	cv::Mat M(640, 480, CV_8UC3, cv::Scalar::all(0));
@@ -73,6 +99,8 @@ int main() {
 	convertRGBtoHSV();
 	decreaseBrightness();
 	imageBlur();
+	performManualThreshold();
+	performAdaptiveThreshold();
 
 	cv::imshow("M", M);
 	cv::waitKey();
